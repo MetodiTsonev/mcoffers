@@ -1,47 +1,49 @@
-import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import './NavMenu.css';
 
-export class NavMenu extends Component {
-  static displayName = NavMenu.name;
+export function NavMenu() {
+  const [open, setOpen] = useState(false);
 
-  constructor (props) {
-    super(props);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    this.toggleNavbar = this.toggleNavbar.bind(this);
-    this.state = {
-      collapsed: true
-    };
-  }
-
-  toggleNavbar () {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  }
-
-  render() {
-    return (
-      <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-          <NavbarBrand tag={Link} to="/">mcoffers</NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-          <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-              </NavItem>
-            </ul>
-          </Collapse>
-        </Navbar>
-      </header>
-    );
-  }
-}
+  return (
+    <header>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h4">
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none', fontFamily: "cursive" }}>McOffers</Link>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer anchor="left" open={open} onClose={toggleDrawer}>
+        <div role="presentation" onClick={toggleDrawer} onKeyDown={toggleDrawer}>
+          <List>
+            <ListItem button component={Link} to="/" >
+              <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem button component={Link} to="/schedule">
+              <ListItemText primary="Schedule" />
+            </ListItem>
+            <ListItem button component={Link} to="/shiftPool">
+              <ListItemText primary="ShiftPool" />
+            </ListItem>
+            <ListItem button component={Link} to="/income">
+              <ListItemText primary="Income" />
+            </ListItem>
+            <ListItem button component={Link} to="/profile">
+              <ListItemText primary="Profile" />
+            </ListItem>
+          </List>
+        </div>
+      </Drawer>
+    </header>
+  );
+};
